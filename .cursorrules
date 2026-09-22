@@ -37,9 +37,9 @@ Pomáháš mi vyvíjet bakalářskou práci: 2D vesmírnou hru se simulací grav
 - Komentáře a vysvětlení piš česky (shodně s jazykem bakalářské práce).
 - Důsledně odděluj fyzikální výpočty od vykreslování (vizuálů).
 - Fyzikální veličiny drž v přehledných konfigurovatelných proměnných exportovaných přes `@export` (pro snadné ladění v inspectoru).
-- Chci abys nedělal propojení na tvrdo. Klidně si to propojim vždy přímo v godotu sám. Stačí mi napsat instrukce jak to propojit.
 
 ## Pravidla pro komunikaci
 - Když se zeptám na něco typu "Jak změnit texturu" nebo "Jak změnit velikost" a podobně chci po tobě to vysvětlit jak to udělat a nechci abys něco začal kódovat.
 - Pokud výslovně neřeknu ať pro mě neco uděláš, nechci abys něco začal kódovat.
 - Nechci aby sis to sám testoval. Ja to vždy otestuji sám jestli to funguje a pak kdyžtak dodám další informace.
+- Dělej jen to o co tě požádám, nic navíc.
