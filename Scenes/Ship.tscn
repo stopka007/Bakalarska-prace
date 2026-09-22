@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ddky3e88coubc"]
+
+[ext_resource type="Script" uid="uid://biwslo1x4rdlh" path="res://Scripts/Entities/Ship.gd" id="1_ship"]
+[ext_resource type="Script" uid="uid://c7h5epar7l2h1" path="res://Scripts/Visuals/ThrusterFlame.gd" id="2_flame"]
+[ext_resource type="Texture2D" uid="uid://cbxv5nh4d70wq" path="res://Textures/bubble_64x64.png" id="3_cmh36"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hull"]
+radius = 26.0
+
+[node name="Ship" type="Area2D" unique_id=1067472800]
+script = ExtResource("1_ship")
+
+[node name="Flame" type="Polygon2D" parent="." unique_id=1002489104]
+visible = false
+position = Vector2(0, 32)
+color = Color(1, 0.639216, 0.239216, 1)
+polygon = PackedVector2Array(-9, 0, 9, 0, 0, 30)
+script = ExtResource("2_flame")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=346371230]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_hull")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=913917528]
+texture = ExtResource("3_cmh36")

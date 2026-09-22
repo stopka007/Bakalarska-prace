@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://b3hs3o4dokdd1"]
+
+[ext_resource type="Script" uid="uid://cr686rak85spb" path="res://Scripts/UI/PauseMenu.gd" id="1_pause"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1744892587 node_paths=PackedStringArray("default_focus_button")]
+process_mode = 3
+layer = 10
+visible = false
+script = ExtResource("1_pause")
+default_focus_button = NodePath("Center/Menu/ResumeButton")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=533015912]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0392157, 0.047059, 0.0901961, 0.701961)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1303749145]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu" type="VBoxContainer" parent="Center" unique_id=498391691]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Menu" unique_id=276306637]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Center/Menu" unique_id=1059902934]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ResumeButton" type="Button" parent="Center/Menu" unique_id=68548402]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Resume"
+
+[node name="QuitToMenuButton" type="Button" parent="Center/Menu" unique_id=36613637]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Quit to menu"
+
+[connection signal="pressed" from="Center/Menu/ResumeButton" to="." method="resume"]
+[connection signal="pressed" from="Center/Menu/QuitToMenuButton" to="." method="quit_to_menu"]
