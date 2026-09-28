@@ -17,6 +17,36 @@ color = Color(1, 0.639216, 0.239216, 1)
 polygon = PackedVector2Array(-9, 0, 9, 0, 0, 30)
 script = ExtResource("2_flame")
 
+[node name="FlameReverse" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(0, -30)
+rotation = 3.1415927
+color = Color(1, 0.639216, 0.239216, 1)
+polygon = PackedVector2Array(-9, 0, 9, 0, 0, 30)
+script = ExtResource("2_flame")
+channel = 1
+size_scale = 0.4
+
+[node name="FlameStrafeLeft" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(30, 2)
+rotation = -1.5707964
+color = Color(1, 0.639216, 0.239216, 1)
+polygon = PackedVector2Array(-9, 0, 9, 0, 0, 30)
+script = ExtResource("2_flame")
+channel = 2
+size_scale = 0.4
+
+[node name="FlameStrafeRight" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(-30, 2)
+rotation = 1.5707964
+color = Color(1, 0.639216, 0.239216, 1)
+polygon = PackedVector2Array(-9, 0, 9, 0, 0, 30)
+script = ExtResource("2_flame")
+channel = 3
+size_scale = 0.4
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=346371230]
 position = Vector2(0, 4)
 shape = SubResource("CircleShape2D_hull")

@@ -12,7 +12,7 @@ extends Area2D
 ##  - Loď stojí na místě, dokud hráč nezapne motor. Při nulovém počtu zdrojů
 ##    gravitace ve scéně je celkové zrychlení dáno jen tahem motoru.
 ##
-## Ovládání: W / Nahoru = tah motoru, A / D (Vlevo / Vpravo) = rotace.
+## Ovládání: W = tah vpřed, S = zpětný tah, A / D = rotace, Q / E = stranový tah.
 
 
 ## Skupina, do které se loď registruje, aby si ji uměly dohledat prvky UI.
@@ -20,6 +20,9 @@ const GROUP_NAME: StringName = &"player_ship"
 
 ## Vstupní akce (definované v project.godot -> Input Map).
 const ACTION_THRUST: StringName = &"thrust"
+const ACTION_THRUST_REVERSE: StringName = &"thrust_reverse"
+const ACTION_STRAFE_LEFT: StringName = &"strafe_left"
+const ACTION_STRAFE_RIGHT: StringName = &"strafe_right"
 const ACTION_ROTATE_LEFT: StringName = &"rotate_left"
 const ACTION_ROTATE_RIGHT: StringName = &"rotate_right"
 
@@ -33,8 +36,11 @@ const LOCAL_FORWARD: Vector2 = Vector2.UP
 ## Hmotnost lodi [kg]. Spolu s tahem určuje zrychlení: a = thrust_force / ship_mass.
 @export_range(0.1, 100.0, 0.1, "or_greater") var ship_mass: float = 1.0
 
-## Tah motoru [N]. Působí ve směru, kam loď míří.
+## Tah hlavního motoru [N]. Působí ve směru, kam loď míří.
 @export_range(0.0, 2000.0, 1.0, "or_greater") var thrust_force: float = 300.0
+
+## Síla manévrovacích motorů (zpět, doleva, doprava) vůči hlavnímu tahu.
+@export_range(0.0, 1.0, 0.05) var maneuver_thrust_ratio: float = 0.5
 
 ## Úhlová rychlost otáčení lodi [°/s].
 @export_range(0.0, 720.0, 5.0) var rotation_speed: float = 160.0
@@ -90,6 +96,13 @@ var last_acceleration: Vector2 = Vector2.ZERO
 ## Aktuální míra tahu 0..1 (analogové ovladače umí i mezihodnoty).
 var thrust_level: float = 0.0
 
+## Míra zpětného tahu 0..1. Síla je `thrust_force * maneuver_thrust_ratio`.
+var reverse_thrust_level: float = 0.0
+
+## Míra tahu doleva / doprava 0..1 (v lokálních souřadnicích lodi).
+var strafe_left_level: float = 0.0
+var strafe_right_level: float = 0.0
+
 # Vnitřní stav integrace – jeden znovupoužívaný objekt, bez alokací za snímek.
 var _state: MotionState = MotionState.new()
 
@@ -131,25 +144,53 @@ func _handle_rotation(delta: float) -> void:
 		rotation += deg_to_rad(rotation_speed) * direction * delta
 
 
-## Zjistí míru tahu a odečte palivo. Bez paliva motor nepracuje.
+## Zjistí míru všech motorů a odečte palivo. Bez paliva motory nepracují.
+## Protilehlé směry (W+S, Q+E) se vyruší a palivo se nespálí naprázdno.
 func _handle_thrust(delta: float) -> void:
-	var requested: float = 0.0
+	var forward: float = 0.0
+	var reverse: float = 0.0
+	var left: float = 0.0
+	var right: float = 0.0
 	if _input_available:
-		requested = clampf(Input.get_action_strength(ACTION_THRUST), 0.0, 1.0)
+		forward = clampf(Input.get_action_strength(ACTION_THRUST), 0.0, 1.0)
+		reverse = clampf(Input.get_action_strength(ACTION_THRUST_REVERSE), 0.0, 1.0)
+		left = clampf(Input.get_action_strength(ACTION_STRAFE_LEFT), 0.0, 1.0)
+		right = clampf(Input.get_action_strength(ACTION_STRAFE_RIGHT), 0.0, 1.0)
 
-	if fuel_enabled and requested > 0.0:
+	var longitudinal: float = clampf(forward - reverse, -1.0, 1.0)
+	var lateral: float = clampf(right - left, -1.0, 1.0)
+
+	var forward_level: float = maxf(longitudinal, 0.0)
+	var reverse_level: float = maxf(-longitudinal, 0.0)
+	var right_level: float = maxf(lateral, 0.0)
+	var left_level: float = maxf(-lateral, 0.0)
+
+	# Manévrovací motory pálí méně paliva, úměrně své síle.
+	var demand: float = forward_level + maneuver_thrust_ratio * (reverse_level + left_level + right_level)
+
+	if fuel_enabled and demand > 0.0:
 		if current_fuel <= 0.0:
-			requested = 0.0
+			forward_level = 0.0
+			reverse_level = 0.0
+			left_level = 0.0
+			right_level = 0.0
 		else:
-			var needed: float = fuel_consumption * requested * delta
+			var needed: float = fuel_consumption * demand * delta
 			if needed > current_fuel:
-				# Na konci nádrže hoří motor jen po část snímku -> zkrácený tah.
-				requested *= current_fuel / needed
+				# Na konci nádrže hoří motory jen po část snímku -> zkrácený tah.
+				var scale_down: float = current_fuel / needed
+				forward_level *= scale_down
+				reverse_level *= scale_down
+				left_level *= scale_down
+				right_level *= scale_down
 				current_fuel = 0.0
 			else:
 				current_fuel -= needed
 
-	thrust_level = requested
+	thrust_level = forward_level
+	reverse_thrust_level = reverse_level
+	strafe_left_level = left_level
+	strafe_right_level = right_level
 
 
 # --- Fyzika ------------------------------------------------------------------
@@ -196,14 +237,26 @@ func _compute_acceleration(position_now: Vector2, _velocity_now: Vector2) -> Vec
 	return total
 
 
-## Zrychlení od motoru: a = F / m ve směru, kam loď míří.
-## Rotace je v rámci jednoho snímku konstantní, takže směr tahu je uvnitř
-## integračního kroku pevný.
+## Zrychlení od motorů: a = F / m.
+## Hlavní tah míří dopředu, zpětný proti němu a stranové doleva/doprava.
+## Manévrovací motory mají sílu `maneuver_thrust_ratio` hlavního tahu.
+## Rotace je v rámci jednoho snímku konstantní, takže směry jsou uvnitř
+## integračního kroku pevné.
 func _thrust_acceleration() -> Vector2:
-	if thrust_level <= 0.0 or ship_mass <= 0.0:
+	if ship_mass <= 0.0:
 		return Vector2.ZERO
-	var magnitude: float = (thrust_force / ship_mass) * thrust_level
-	return LOCAL_FORWARD.rotated(rotation) * magnitude
+	if thrust_level <= 0.0 and reverse_thrust_level <= 0.0 and strafe_left_level <= 0.0 and strafe_right_level <= 0.0:
+		return Vector2.ZERO
+
+	var main: float = thrust_force / ship_mass
+	var maneuver: float = main * maneuver_thrust_ratio
+	var forward_dir: Vector2 = LOCAL_FORWARD.rotated(rotation)
+	var right_dir: Vector2 = Vector2.RIGHT.rotated(rotation)
+	return (
+		forward_dir * main * thrust_level
+		- forward_dir * maneuver * reverse_thrust_level
+		+ right_dir * maneuver * (strafe_right_level - strafe_left_level)
+	)
 
 
 # --- Veřejné API -------------------------------------------------------------
@@ -215,6 +268,9 @@ func reset_motion(new_position: Vector2, new_velocity: Vector2 = Vector2.ZERO, n
 	rotation = deg_to_rad(new_rotation_degrees)
 	velocity = new_velocity
 	thrust_level = 0.0
+	reverse_thrust_level = 0.0
+	strafe_left_level = 0.0
+	strafe_right_level = 0.0
 	last_acceleration = Vector2.ZERO
 	current_fuel = max_fuel
 	_state.set_state(new_position, new_velocity)
@@ -255,7 +311,14 @@ func get_integration_method_name() -> String:
 
 
 func _check_input_actions() -> bool:
-	var required: Array[StringName] = [ACTION_THRUST, ACTION_ROTATE_LEFT, ACTION_ROTATE_RIGHT]
+	var required: Array[StringName] = [
+		ACTION_THRUST,
+		ACTION_THRUST_REVERSE,
+		ACTION_STRAFE_LEFT,
+		ACTION_STRAFE_RIGHT,
+		ACTION_ROTATE_LEFT,
+		ACTION_ROTATE_RIGHT,
+	]
 	for action in required:
 		if not InputMap.has_action(action):
 			push_warning(
