@@ -115,6 +115,9 @@ var _acceleration_func: Callable = Callable()
 # Jsou k dispozici všechny vstupní akce?
 var _input_available: bool = false
 
+# Černá díra při dokončení kola přestane loď integrovat a vtáhne ji vizuálně.
+var controls_locked: bool = false
+
 
 func _ready() -> void:
 	add_to_group(GROUP_NAME)
@@ -126,9 +129,21 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if controls_locked:
+		return
 	_handle_rotation(delta)
 	_handle_thrust(delta)
 	_integrate_motion(delta)
+
+
+## Zastaví řízení i integraci. Použije se, když loď spolkne černá díra.
+func lock_controls() -> void:
+	controls_locked = true
+	thrust_level = 0.0
+	reverse_thrust_level = 0.0
+	strafe_left_level = 0.0
+	strafe_right_level = 0.0
+	velocity = Vector2.ZERO
 
 
 # --- Vstup -------------------------------------------------------------------
@@ -267,10 +282,12 @@ func reset_motion(new_position: Vector2, new_velocity: Vector2 = Vector2.ZERO, n
 	global_position = new_position
 	rotation = deg_to_rad(new_rotation_degrees)
 	velocity = new_velocity
+	controls_locked = false
 	thrust_level = 0.0
 	reverse_thrust_level = 0.0
 	strafe_left_level = 0.0
 	strafe_right_level = 0.0
+	scale = Vector2.ONE
 	last_acceleration = Vector2.ZERO
 	current_fuel = max_fuel
 	_state.set_state(new_position, new_velocity)

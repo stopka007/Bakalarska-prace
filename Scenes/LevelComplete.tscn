@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/LevelComplete.gd" id="1_complete"]
+
+[node name="LevelComplete" type="CanvasLayer"]
+process_mode = 3
+layer = 20
+visible = false
+script = ExtResource("1_complete")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0392157, 0.047059, 0.0901961, 0.701961)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Menu"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Level complete"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Center/Menu"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ContinueButton" type="Button" parent="Center/Menu"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Continue to next level"
+
+[node name="QuitButton" type="Button" parent="Center/Menu"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Quit"
+
+[connection signal="pressed" from="Center/Menu/ContinueButton" to="." method="continue_to_next_level"]
+[connection signal="pressed" from="Center/Menu/QuitButton" to="." method="quit_to_menu"]

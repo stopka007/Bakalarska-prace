@@ -16,3 +16,9 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+.cursorrules
+
+# Sestavená hra a podklad k textu práce
+/build/
+/docs/

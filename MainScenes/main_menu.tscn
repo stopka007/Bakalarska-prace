@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://jpevuw07qih8"]
 
 [ext_resource type="Script" uid="uid://dg0frhkowv0kp" path="res://Scripts/UI/MainMenu.gd" id="1_menu"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelSelect.gd" id="2_levels"]
 
 [node name="MainMenu" type="Control" unique_id=458162456 node_paths=PackedStringArray("default_focus_button")]
 layout_mode = 3
@@ -10,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
-default_focus_button = NodePath("Center/Menu/PlayButton")
+default_focus_button = NodePath("Center/Menu/LevelsButton")
 
 [node name="Background" type="ColorRect" parent="." unique_id=175453719]
 layout_mode = 1
@@ -47,11 +48,11 @@ custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PlayButton" type="Button" parent="Center/Menu" unique_id=512071627]
+[node name="LevelsButton" type="Button" parent="Center/Menu" unique_id=512071627]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "Play"
+text = "Levels"
 
 [node name="QuitButton" type="Button" parent="Center/Menu" unique_id=634621701]
 custom_minimum_size = Vector2(0, 52)
@@ -59,5 +60,30 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Quit"
 
-[connection signal="pressed" from="Center/Menu/PlayButton" to="." method="on_play_pressed"]
+[node name="Levels" type="VBoxContainer" parent="Center"]
+visible = false
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Levels"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 52
+text = "Levels"
+horizontal_alignment = 1
+
+[node name="LevelList" type="VBoxContainer" parent="Center/Levels"]
+layout_mode = 2
+theme_override_constants/separation = 12
+script = ExtResource("2_levels")
+
+[node name="BackButton" type="Button" parent="Center/Levels"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Back"
+
+[connection signal="pressed" from="Center/Menu/LevelsButton" to="." method="on_levels_pressed"]
 [connection signal="pressed" from="Center/Menu/QuitButton" to="." method="on_quit_pressed"]
+[connection signal="pressed" from="Center/Levels/BackButton" to="." method="on_levels_back_pressed"]

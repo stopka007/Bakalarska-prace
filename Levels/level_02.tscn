@@ -1,0 +1,84 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Entities/BlackHole.gd" id="1_hole"]
+[ext_resource type="Texture2D" uid="uid://b4ro7kdw01unw" path="res://Textures/meteorBig.png" id="2_big"]
+[ext_resource type="Script" uid="uid://dtp3eejcltyct" path="res://Scripts/Entities/GravityHazard.gd" id="3_hazard"]
+[ext_resource type="Texture2D" uid="uid://byftwy5i4yn6l" path="res://Textures/meteorSmall.png" id="4_small"]
+[ext_resource type="Script" path="res://Scripts/Entities/LevelWalls.gd" id="5_walls"]
+
+[node name="Level2" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(0, 200)
+
+[node name="BlackHole" type="Node2D" parent="."]
+position = Vector2(0, -2120)
+script = ExtResource("1_hole")
+body_mass = 5000.0
+horizon_radius = 64.0
+
+[node name="Gate1Left" type="Sprite2D" parent="."]
+position = Vector2(-60, -140)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="Gate1Right" type="Sprite2D" parent="."]
+position = Vector2(280, -160)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="MeteorSmall1" type="Sprite2D" parent="."]
+position = Vector2(100, -320)
+texture = ExtResource("4_small")
+script = ExtResource("3_hazard")
+body_mass = 50.0
+influence_radius = 100.0
+
+[node name="Gate2Right" type="Sprite2D" parent="."]
+position = Vector2(60, -680)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="Gate2Left" type="Sprite2D" parent="."]
+position = Vector2(-280, -700)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="MeteorSmall2" type="Sprite2D" parent="."]
+position = Vector2(-80, -1040)
+texture = ExtResource("4_small")
+script = ExtResource("3_hazard")
+body_mass = 50.0
+influence_radius = 100.0
+
+[node name="Gate3Left" type="Sprite2D" parent="."]
+position = Vector2(-50, -1400)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="Gate3Right" type="Sprite2D" parent="."]
+position = Vector2(270, -1420)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="MeteorBig" type="Sprite2D" parent="."]
+position = Vector2(80, -1760)
+texture = ExtResource("2_big")
+script = ExtResource("3_hazard")
+body_mass = 500.0
+influence_radius = 180.0
+
+[node name="Walls" type="Node2D" parent="."]
+script = ExtResource("5_walls")

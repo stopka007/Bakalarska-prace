@@ -2,32 +2,37 @@ extends Control
 
 ## Hlavní menu hry.
 ##
-## Skript sám nic nepropojuje – signály `pressed` jednotlivých tlačítek
-## si napojíš v editoru na veřejné metody níže. Cílová scéna se nastavuje
-## přes inspektor, aby menu nebylo svázané s konkrétním souborem.
+## Tlačítko Levels otevře seznam kol. Která jsou odemčená, řeší `LevelProgress`.
 
-
-## Scéna, která se spustí po stisknutí tlačítka Play.
-@export_file("*.tscn") var gameplay_scene_path: String = "res://MainScenes/gameplay.tscn"
 
 ## Tlačítko, které po otevření menu dostane klávesový fokus.
 @export var default_focus_button: Button = null
 
+@onready var _main_box: Control = $Center/Menu
+@onready var _levels_box: Control = $Center/Levels
+@onready var _level_list: VBoxContainer = $Center/Levels/LevelList
+
 
 func _ready() -> void:
+	_show_main()
+
+
+func _show_main() -> void:
+	_levels_box.hide()
+	_main_box.show()
 	if default_focus_button != null:
 		default_focus_button.grab_focus()
 
 
-## Přepne hru do herní scény.
-func on_play_pressed() -> void:
-	if gameplay_scene_path.is_empty():
-		push_warning("MainMenu: není nastavena cesta ke gameplay scéně.")
-		return
+## Přepne na seznam levelů a obnoví zámek podle uloženého postupu.
+func on_levels_pressed() -> void:
+	_main_box.hide()
+	_levels_box.show()
+	_level_list.call("refresh")
 
-	var error: Error = get_tree().change_scene_to_file(gameplay_scene_path)
-	if error != OK:
-		push_error("MainMenu: scénu '%s' se nepodařilo načíst (chyba %d)." % [gameplay_scene_path, error])
+
+func on_levels_back_pressed() -> void:
+	_show_main()
 
 
 ## Ukončí aplikaci. V editoru tím skončí i spuštěná hra.

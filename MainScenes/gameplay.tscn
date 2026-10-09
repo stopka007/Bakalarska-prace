@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://ddky3e88coubc" path="res://Scenes/Ship.tscn" id="1_ship"]
 [ext_resource type="Script" uid="uid://bikg0bgtkdny5" path="res://Scripts/UI/ShipHud.gd" id="2_hud"]
-[ext_resource type="Texture2D" uid="uid://b4ro7kdw01unw" path="res://Textures/meteorBig.png" id="3_3tnba"]
-[ext_resource type="Texture2D" uid="uid://byftwy5i4yn6l" path="res://Textures/meteorSmall.png" id="4_2x61r"]
 [ext_resource type="Script" uid="uid://dg0ttndag1ft2" path="res://Scripts/UI/FuelBar.gd" id="5_fuel"]
 [ext_resource type="PackedScene" uid="uid://b3hs3o4dokdd1" path="res://Scenes/PauseMenu.tscn" id="6_pause"]
-[ext_resource type="Script" uid="uid://dtp3eejcltyct" path="res://Scripts/Entities/GravityHazard.gd" id="7_hazard"]
+[ext_resource type="Script" uid="uid://c5dkbcoda8c4a" path="res://Scripts/Game/LevelHost.gd" id="8_host"]
+[ext_resource type="PackedScene" path="res://Scenes/LevelComplete.tscn" id="9_complete"]
+[ext_resource type="Script" uid="uid://d0hn40s3sqhc2" path="res://Scripts/Game/LevelCamera.gd" id="10_cam"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_controls"]
 content_margin_left = 14.0
@@ -46,11 +46,12 @@ expand_margin_left = -3.0
 expand_margin_right = -3.0
 
 [node name="Gameplay" type="Node2D" unique_id=1577673674]
+script = ExtResource("8_host")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1640067989]
 z_index = -100
 offset_left = -2910.0
-offset_top = -3410.0
+offset_top = -4600.0
 offset_right = 5090.0
 offset_bottom = 4590.0
 mouse_filter = 2
@@ -60,6 +61,7 @@ color = Color(0.0392157, 0.047059, 0.0901961, 1)
 position = Vector2(576, 614)
 
 [node name="Camera2D" type="Camera2D" parent="Ship" unique_id=1782656555]
+script = ExtResource("10_cam")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=383176354]
 
@@ -112,50 +114,6 @@ fill_mode = 3
 script = ExtResource("5_fuel")
 ship = NodePath("../../Ship")
 
-[node name="MeteorBig" type="Sprite2D" parent="." unique_id=649507616]
-position = Vector2(373.00003, 162)
-scale = Vector2(0.99264705, 0.9864865)
-texture = ExtResource("3_3tnba")
-script = ExtResource("7_hazard")
-body_mass = 500.0
-
-[node name="MeteorBig4" type="Sprite2D" parent="." unique_id=338710569]
-position = Vector2(734, -305.99997)
-scale = Vector2(0.99264705, 0.9864865)
-texture = ExtResource("3_3tnba")
-script = ExtResource("7_hazard")
-body_mass = 500.0
-
-[node name="MeteorBig2" type="Sprite2D" parent="." unique_id=1146333795]
-position = Vector2(329.99997, -93)
-scale = Vector2(0.99264705, 0.9864865)
-texture = ExtResource("3_3tnba")
-script = ExtResource("7_hazard")
-body_mass = 500.0
-
-[node name="MeteorBig3" type="Sprite2D" parent="." unique_id=488040720]
-position = Vector2(943, -119.99997)
-scale = Vector2(0.99264705, 0.9864865)
-texture = ExtResource("3_3tnba")
-script = ExtResource("7_hazard")
-body_mass = 500.0
-
-[node name="MeteorSmall" type="Sprite2D" parent="." unique_id=1852245051]
-position = Vector2(692, 51)
-texture = ExtResource("4_2x61r")
-script = ExtResource("7_hazard")
-body_mass = 50.0
-
-[node name="MeteorSmall2" type="Sprite2D" parent="." unique_id=1756558283]
-position = Vector2(685, -55)
-texture = ExtResource("4_2x61r")
-script = ExtResource("7_hazard")
-body_mass = 50.0
-
-[node name="MeteorSmall3" type="Sprite2D" parent="." unique_id=1257579025]
-position = Vector2(595, -74)
-texture = ExtResource("4_2x61r")
-script = ExtResource("7_hazard")
-body_mass = 50.0
-
 [node name="PauseMenu" parent="." unique_id=2083198429 instance=ExtResource("6_pause")]
+
+[node name="LevelComplete" parent="." unique_id=1454069918 instance=ExtResource("9_complete")]
