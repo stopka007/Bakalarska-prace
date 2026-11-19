@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="2_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="3_card"]
+
+[node name="MissionSetrvacnost" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(0, 180)
+script = ExtResource("1_spawn")
+initial_velocity = Vector2(0, -40)
+
+[node name="Goal" type="Node2D" parent="."]
+position = Vector2(0, -480)
+script = ExtResource("2_goal")
+radius = 70.0
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("3_card")
+mission_title = "Setrvačnost"
+mission_text = "Pokud nezapneš motor rychlost se sama nezmění."
+camera_zoom = 0.42
+lesson_text = "Ve vesmíru není vzduch, který by loď brzdil. Když se jednou rozjede, letí pořád stejně rychle a pořád rovně. Tomu se říká setrvačnost.
+
+Motor zapínat nemusíš rychlost tady už máš."

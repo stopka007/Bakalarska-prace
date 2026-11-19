@@ -15,9 +15,13 @@ const MENU_SCENE: String = "res://MainScenes/main_menu.tscn"
 
 ## Pořadí levelů. `title` je text tlačítka, `scene` je rozložení překážek.
 const LEVELS: Array[Dictionary] = [
-	{"title": "Level 1", "scene": "res://Levels/level_01.tscn"},
-	{"title": "Level 2", "scene": "res://Levels/level_02.tscn"},
-	{"title": "Level 3", "scene": "res://Levels/level_03.tscn"},
+	{"title": "1 Setrvačnost", "scene": "res://Levels/mission_01.tscn"},
+	{"title": "2 Přitažlivost", "scene": "res://Levels/mission_02.tscn"},
+	{"title": "3 Dráha", "scene": "res://Levels/mission_03.tscn"},
+	{"title": "4 Prak", "scene": "res://Levels/mission_04.tscn"},
+	{"title": "5 Let", "scene": "res://Levels/level_01.tscn"},
+	{"title": "6 Let", "scene": "res://Levels/level_02.tscn"},
+	{"title": "7 Let", "scene": "res://Levels/level_03.tscn"},
 ]
 
 ## Právě hraný level (0 = první).
@@ -25,6 +29,9 @@ var selected_index: int = 0
 
 ## Dokončené kolo už ukázalo obrazovku s volbou dalšího levelu.
 var run_finished: bool = false
+
+## Úvodní text mise je na obrazovce a hra ještě neběží.
+var briefing: bool = false
 
 signal level_finished
 
@@ -83,6 +90,7 @@ func start_level(index: int) -> void:
 		return
 	selected_index = index
 	run_finished = false
+	briefing = false
 	get_tree().paused = false
 	var error: Error = get_tree().change_scene_to_file(GAMEPLAY_SCENE)
 	if error != OK:
@@ -110,7 +118,8 @@ func _load() -> void:
 	var config := ConfigFile.new()
 	if config.load(SAVE_PATH) != OK:
 		return
-	var raw: Variant = config.get_value("progress", "completed", [])
+	# Nový klíč, protože pořadí misí se změnilo a starý seznam by odemkl špatná kola.
+	var raw: Variant = config.get_value("progress", "completed_v2", [])
 	if typeof(raw) != TYPE_ARRAY:
 		return
 	var saved: Array = raw
@@ -123,5 +132,5 @@ func _save() -> void:
 	var flags: Array[int] = []
 	for done in _completed:
 		flags.append(1 if done else 0)
-	config.set_value("progress", "completed", flags)
+	config.set_value("progress", "completed_v2", flags)
 	config.save(SAVE_PATH)

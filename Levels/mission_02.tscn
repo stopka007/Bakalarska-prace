@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Entities/Planet.gd" id="2_planet"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="3_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="4_card"]
+
+[node name="MissionPritazlivost" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(0, 240)
+script = ExtResource("1_spawn")
+
+[node name="Planet" type="Node2D" parent="."]
+position = Vector2(0, -840)
+script = ExtResource("2_planet")
+body_mass = 6000.0
+surface_radius = 56.0
+lethal_on_contact = false
+planet_color = Color(0.29, 0.55, 0.92, 1)
+
+[node name="Goal" type="Node2D" parent="Planet"]
+script = ExtResource("3_goal")
+radius = 100.0
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("4_card")
+mission_title = "Přitažlivost"
+mission_text = "Čím blíže jsi, tím rychleji se budeš približovat."
+camera_zoom = 0.3
+lesson_text = "Planeta tě přitahuje. Když jsi daleko je ten tah slabý, proto ze začátku poletíš pomalu. Čím budeš blíž, tím bude pád rychlejší.
+
+To je Newtonův gravitační zákon: čím těžší těleso a čím blíže k němu jses, síla pritahování bude větší."

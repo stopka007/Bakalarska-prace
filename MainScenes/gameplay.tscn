@@ -7,6 +7,9 @@
 [ext_resource type="Script" uid="uid://c5dkbcoda8c4a" path="res://Scripts/Game/LevelHost.gd" id="8_host"]
 [ext_resource type="PackedScene" path="res://Scenes/LevelComplete.tscn" id="9_complete"]
 [ext_resource type="Script" uid="uid://d0hn40s3sqhc2" path="res://Scripts/Game/LevelCamera.gd" id="10_cam"]
+[ext_resource type="Script" uid="uid://ddlk6rgjax2lp" path="res://Scripts/UI/MissionBrief.gd" id="11_brief"]
+[ext_resource type="PackedScene" path="res://Scenes/MissionIntro.tscn" id="12_intro"]
+[ext_resource type="Script" uid="uid://b05on7om32voo" path="res://Scripts/UI/SpeedIndicator.gd" id="13_speed"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_controls"]
 content_margin_left = 14.0
@@ -65,6 +68,46 @@ script = ExtResource("10_cam")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=383176354]
 
+[node name="MissionBrief" type="PanelContainer" parent="HUD" unique_id=514749858]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -557.0
+offset_top = 13.0
+offset_right = -311.0
+offset_bottom = 149.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_controls")
+script = ExtResource("11_brief")
+
+[node name="Margin" type="MarginContainer" parent="HUD/MissionBrief" unique_id=141908269]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="Box" type="VBoxContainer" parent="HUD/MissionBrief/Margin" unique_id=1086188882]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="HUD/MissionBrief/Margin/Box" unique_id=1626875835]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Mise"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="HUD/MissionBrief/Margin/Box" unique_id=1109579790]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "..."
+autowrap_mode = 3
+
 [node name="Info" type="Label" parent="HUD" unique_id=1871826827 node_paths=PackedStringArray("ship")]
 offset_left = 16.0
 offset_top = 12.0
@@ -95,6 +138,53 @@ S   zpět
 A D otáčení
 Q E strany"
 
+[node name="SpeedPanel" type="PanelContainer" parent="HUD" unique_id=886010096]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -125.0
+offset_right = 168.0
+offset_bottom = -16.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_controls")
+
+[node name="Box" type="VBoxContainer" parent="HUD/SpeedPanel" unique_id=2137135509 node_paths=PackedStringArray("ship")]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+script = ExtResource("13_speed")
+ship = NodePath("../../../Ship")
+
+[node name="Title" type="Label" parent="HUD/SpeedPanel/Box" unique_id=884409624]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Rychlost"
+
+[node name="Value" type="Label" parent="HUD/SpeedPanel/Box" unique_id=826087409]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.870588, 0.909804, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "0 px/s"
+
+[node name="State" type="Label" parent="HUD/SpeedPanel/Box" unique_id=1147873438]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.86, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "rychlost drží"
+
+[node name="Bar" type="ProgressBar" parent="HUD/SpeedPanel/Box" unique_id=794971861]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fuel_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fuel_fill")
+max_value = 1.0
+step = 0.0
+show_percentage = false
+
 [node name="FuelBar" type="ProgressBar" parent="HUD" unique_id=1165107407 node_paths=PackedStringArray("ship")]
 anchors_preset = -1
 anchor_top = 1.0
@@ -117,3 +207,5 @@ ship = NodePath("../../Ship")
 [node name="PauseMenu" parent="." unique_id=2083198429 instance=ExtResource("6_pause")]
 
 [node name="LevelComplete" parent="." unique_id=1454069918 instance=ExtResource("9_complete")]
+
+[node name="MissionIntro" parent="." unique_id=987626009 instance=ExtResource("12_intro")]

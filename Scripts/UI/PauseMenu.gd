@@ -26,7 +26,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Po dokončení kola má přednost obrazovka s Continue / Quit.
-	if LevelProgress.run_finished:
+	if LevelProgress.run_finished or LevelProgress.briefing:
 		return
 	if not event.is_action_pressed(pause_action):
 		return

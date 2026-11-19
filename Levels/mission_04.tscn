@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Entities/Planet.gd" id="2_planet"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="3_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="4_card"]
+
+[node name="MissionPrak" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(180, 620)
+script = ExtResource("1_spawn")
+fuel_capacity = 10.0
+
+[node name="Planet" type="Node2D" parent="."]
+position = Vector2(0, -80)
+script = ExtResource("2_planet")
+body_mass = 5000.0
+surface_radius = 90.0
+lethal_on_contact = true
+planet_color = Color(0.75, 0.78, 0.45, 1)
+
+[node name="Goal" type="Node2D" parent="."]
+position = Vector2(-240, -1100)
+script = ExtResource("3_goal")
+radius = 110.0
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("4_card")
+mission_title = "Gravitační prak"
+mission_text = "Miň planetu vedle. Její tah tě ohne ke kroužku."
+camera_zoom = 0.4
+lesson_text = "Přímo na cíl letět nejde. Planeta stojí v cestě a paliva je málo na velkou zajížďku.
+
+Namiř tak, abys planetu minul vedle, ne do ní. Jak poletíš okolo, planeta tě stáčí a hodí tě dál. Tomu se říká gravitační prak. Když trefíš planetu, kolo končí."
