@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://ddlk6rgjax2lp" path="res://Scripts/UI/MissionBrief.gd" id="11_brief"]
 [ext_resource type="PackedScene" path="res://Scenes/MissionIntro.tscn" id="12_intro"]
 [ext_resource type="Script" uid="uid://b05on7om32voo" path="res://Scripts/UI/SpeedIndicator.gd" id="13_speed"]
+[ext_resource type="Script" path="res://Scripts/UI/GoalArrow.gd" id="14_arrow"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_controls"]
 content_margin_left = 14.0
@@ -67,6 +68,15 @@ position = Vector2(576, 614)
 script = ExtResource("10_cam")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=383176354]
+
+[node name="GoalArrow" type="Control" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("14_arrow")
 
 [node name="MissionBrief" type="PanelContainer" parent="HUD" unique_id=514749858]
 anchors_preset = 5
@@ -137,6 +147,18 @@ text = "W   tah
 S   zpět
 A D otáčení
 Q E strany"
+
+[node name="RestartButton" type="Button" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -174.0
+offset_right = 148.0
+offset_bottom = -132.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "Restart"
 
 [node name="SpeedPanel" type="PanelContainer" parent="HUD" unique_id=886010096]
 anchors_preset = 2
@@ -209,3 +231,5 @@ ship = NodePath("../../Ship")
 [node name="LevelComplete" parent="." unique_id=1454069918 instance=ExtResource("9_complete")]
 
 [node name="MissionIntro" parent="." unique_id=987626009 instance=ExtResource("12_intro")]
+
+[connection signal="pressed" from="HUD/RestartButton" to="." method="restart_mission"]

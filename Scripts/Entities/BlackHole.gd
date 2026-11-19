@@ -23,6 +23,7 @@ func _ready() -> void:
 	super._ready()
 	# `GravityField` těleso mimo `influence_radius` úplně přeskočí.
 	influence_radius = _pull_radius()
+	add_to_group(&"mission_target")
 	z_index = 10
 	queue_redraw()
 

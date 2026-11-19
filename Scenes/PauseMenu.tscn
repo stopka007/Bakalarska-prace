@@ -47,6 +47,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Resume"
 
+[node name="RestartButton" type="Button" parent="Center/Menu"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Restart"
+
 [node name="QuitToMenuButton" type="Button" parent="Center/Menu" unique_id=36613637]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
@@ -54,4 +60,5 @@ theme_override_font_sizes/font_size = 20
 text = "Quit to menu"
 
 [connection signal="pressed" from="Center/Menu/ResumeButton" to="." method="resume"]
+[connection signal="pressed" from="Center/Menu/RestartButton" to="." method="restart_mission"]
 [connection signal="pressed" from="Center/Menu/QuitToMenuButton" to="." method="quit_to_menu"]

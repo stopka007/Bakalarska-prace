@@ -52,6 +52,11 @@ func pause_game() -> void:
 		default_focus_button.grab_focus()
 
 
+## Zahodí rozehraný stav a načte stejnou misi od začátku.
+func restart_mission() -> void:
+	LevelProgress.restart_level()
+
+
 ## Skryje překryv a nechá simulaci pokračovat z místa, kde byla zmrazena.
 func resume() -> void:
 	get_tree().paused = false

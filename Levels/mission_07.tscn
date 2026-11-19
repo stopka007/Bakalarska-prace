@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Entities/Planet.gd" id="2_planet"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCheckpoint.gd" id="3_check"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="4_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="5_card"]
+
+[node name="MissionPrestup" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(400, 0)
+script = ExtResource("1_spawn")
+initial_velocity = Vector2(0, -118)
+fuel_capacity = 20.0
+
+[node name="Planet" type="Node2D" parent="."]
+script = ExtResource("2_planet")
+body_mass = 8000.0
+surface_radius = 76.0
+lethal_on_contact = true
+planet_color = Color(0.42, 0.62, 0.55, 1)
+
+[node name="Checkpoint" type="Node2D" parent="."]
+position = Vector2(-400, 0)
+script = ExtResource("3_check")
+radius = 52.0
+
+[node name="Goal" type="Node2D" parent="."]
+position = Vector2(0, -820)
+script = ExtResource("4_goal")
+radius = 58.0
+checkpoint_path = NodePath("../Checkpoint")
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("5_card")
+mission_title = "Přestup"
+mission_text = "Nejdřív žlutý kruh na druhé straně, pak zelený dál od planety."
+camera_zoom = 0.42
+lesson_text = "Setrvačnost tě nese po kruhu, planeta tě na něm drží. Nejdřív proletíš žlutý kruh na druhé straně. Zelený cíl je dál, na kruh sám nedosáhne. Až budeš na druhé straně, přidej tah a dráhu zvedni."

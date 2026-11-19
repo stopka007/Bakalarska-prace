@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Entities/Planet.gd" id="2_planet"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="3_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="4_card"]
+
+[node name="MissionUnik" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(0, 280)
+rotation = 3.1415927
+script = ExtResource("1_spawn")
+initial_velocity = Vector2(0, -45)
+fuel_capacity = 20.0
+
+[node name="Planet" type="Node2D" parent="."]
+script = ExtResource("2_planet")
+body_mass = 10000.0
+surface_radius = 82.0
+lethal_on_contact = true
+planet_color = Color(0.55, 0.32, 0.72, 1)
+
+[node name="Goal" type="Node2D" parent="."]
+position = Vector2(0, 1280)
+script = ExtResource("3_goal")
+radius = 62.0
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("4_card")
+mission_title = "Únik"
+mission_text = "Odleť od planety ke kroužku. Palivo nech na jeden tah."
+camera_zoom = 0.4
+lesson_text = "Planeta tě stahuje k sobě. Rychle zareaguj a odleť pryč"

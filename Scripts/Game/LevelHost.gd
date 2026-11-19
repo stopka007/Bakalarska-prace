@@ -47,6 +47,11 @@ func _ready() -> void:
 		intro.call("open_for", card)
 
 
+## Tlačítko v HUD. Stejné kolo znovu od startu.
+func restart_mission() -> void:
+	LevelProgress.restart_level()
+
+
 ## Výukové mise mají vlastní odstup kamery, ať je vidět cíl i planeta.
 ## Ostatní kola zůstanou na zoomu 1.
 func _apply_mission_camera(card: Node) -> void:

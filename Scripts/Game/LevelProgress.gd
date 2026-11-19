@@ -19,9 +19,12 @@ const LEVELS: Array[Dictionary] = [
 	{"title": "2 Přitažlivost", "scene": "res://Levels/mission_02.tscn"},
 	{"title": "3 Dráha", "scene": "res://Levels/mission_03.tscn"},
 	{"title": "4 Prak", "scene": "res://Levels/mission_04.tscn"},
-	{"title": "5 Let", "scene": "res://Levels/level_01.tscn"},
-	{"title": "6 Let", "scene": "res://Levels/level_02.tscn"},
-	{"title": "7 Let", "scene": "res://Levels/level_03.tscn"},
+	{"title": "5 Únik", "scene": "res://Levels/mission_05.tscn"},
+	{"title": "6 Průlet", "scene": "res://Levels/mission_06.tscn"},
+	{"title": "7 Přestup", "scene": "res://Levels/mission_07.tscn"},
+	{"title": "8 Let", "scene": "res://Levels/level_01.tscn"},
+	{"title": "9 Let", "scene": "res://Levels/level_02.tscn"},
+	{"title": "10 Let", "scene": "res://Levels/level_03.tscn"},
 ]
 
 ## Právě hraný level (0 = první).
@@ -82,6 +85,11 @@ func button_label(index: int) -> String:
 	if is_completed(index):
 		return "%s (done)" % title
 	return title
+
+
+## Spustí znovu právě hrané kolo, od startu a s plným zadáním mise.
+func restart_level() -> void:
+	start_level(selected_index)
 
 
 ## Načte herní scénu s vybraným levelem.

@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Game/MissionSpawn.gd" id="1_spawn"]
+[ext_resource type="Script" path="res://Scripts/Entities/Planet.gd" id="2_planet"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionGoal.gd" id="3_goal"]
+[ext_resource type="Script" path="res://Scripts/Game/MissionCard.gd" id="4_card"]
+
+[node name="MissionPrulet" type="Node2D"]
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(-640, 240)
+rotation = 1.5707964
+script = ExtResource("1_spawn")
+initial_velocity = Vector2(165, 0)
+fuel_capacity = 8.0
+
+[node name="Planet" type="Node2D" parent="."]
+position = Vector2(-80, 70)
+script = ExtResource("2_planet")
+body_mass = 2600.0
+surface_radius = 58.0
+lethal_on_contact = true
+planet_color = Color(0.85, 0.45, 0.38, 1)
+
+[node name="Planet2" type="Node2D" parent="."]
+position = Vector2(380, -160)
+script = ExtResource("2_planet")
+body_mass = 7200.0
+surface_radius = 82.0
+lethal_on_contact = true
+planet_color = Color(0.38, 0.58, 0.86, 1)
+
+[node name="Goal" type="Node2D" parent="."]
+position = Vector2(160, -860)
+script = ExtResource("3_goal")
+radius = 64.0
+
+[node name="MissionCard" type="Node" parent="."]
+script = ExtResource("4_card")
+mission_title = "Průlet"
+mission_text = "Rovně kroužek mineš. Nejdřív menší planeta, pak těžší prak."
+camera_zoom = 0.4
+lesson_text = "Letíš rychle. První planeta tě jen vychýlí, druhá těžší tě má hodit ke kroužku. Ten je daleko mimo záběr. Palivo je jen na malou opravu a do planet nesmíš narazit."
